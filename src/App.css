@@ -1,0 +1,30 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 170px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.container {
+  padding-inline: 3%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+.movieCard {
+  width: 100%;
+  margin-inline: auto;
+}
+
+.movieTitle {
+  font-size: 0.75rem;
+  width: 165px;
+}
