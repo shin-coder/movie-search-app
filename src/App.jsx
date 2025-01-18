@@ -6,6 +6,9 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [searchWord, setSearchWord] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
   const API_URL = import.meta.env.VITE_TMDB_API_URL;
   const IMG_PATH = import.meta.env.VITE_TMDB_IMG_PATH;
@@ -30,11 +33,36 @@ function App() {
     setSelectedYear(e.target.value);
     setPage(1);
     setMovies([]);
+    setFilteredMovies([]);
+    setIsSearching(false);
+    setSearchWord('');
   };
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+    setIsSearching(true);
+
+    const searchResults = movies.filter((movie) =>
+      movie.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredMovies(searchResults);
+  };
+
+  const displayMovies = isSearching ? filteredMovies : movies;
+
   return (
     <>
       <div className="contentWrap">
         <h1>Movie Search</h1>
+        <form onSubmit={searchHandler}>
+          <input
+            type="text"
+            value={searchWord}
+            onChange={(e) => setSearchWord(e.target.value)}
+            placeholder="映画を検索..."
+          />
+          <button type="submit">検索</button>
+        </form>
         <div className="selectWrap">
           <select
             value={selectedYear || ''}
@@ -51,23 +79,29 @@ function App() {
         </div>
 
         <div className="container">
-          {movies.map((movie, index) => (
-            <div className="movieCard" key={index}>
-              <img
-                src={
-                  movie.poster_path
-                    ? `${IMG_PATH}${movie.poster_path}`
-                    : '/placeholder.png'
-                }
-                alt={movie.title}
-              />
-              <h2 className="movieTitle">{movie.title}</h2>
-            </div>
-          ))}
+          {displayMovies.length > 0 ? (
+            displayMovies.map((movie, index) => (
+              <div className="movieCard" key={index}>
+                <img
+                  src={
+                    movie.poster_path
+                      ? `${IMG_PATH}${movie.poster_path}`
+                      : '/placeholder.png'
+                  }
+                  alt={movie.title}
+                />
+                <h2 className="movieTitle">{movie.title}</h2>
+              </div>
+            ))
+          ) : (
+            <p className="no-results">検索結果がありませんでした。</p>
+          )}
         </div>
-        <div className="load-more">
-          <button onClick={loadMore}>さらに読み込む</button>
-        </div>
+        {!isSearching && displayMovies.length > 0 && (
+          <div className="load-more">
+            <button onClick={loadMore}>さらに読み込む</button>
+          </div>
+        )}
       </div>
     </>
   );
