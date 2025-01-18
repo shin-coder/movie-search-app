@@ -12,11 +12,28 @@ img {
   object-fit: cover;
 }
 
+.contentWrap {
+  max-width: 800px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.contentWrap h1 {
+  padding-inline: 3%;
+}
+
+.selectWrap {
+  padding-inline: 3%;
+  margin-bottom: 2rem;
+}
+
 .container {
   padding-inline: 3%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.8rem;
+  gap: 1rem;
+  max-width: 800px;
+  margin-inline: auto;
 }
 
 .movieCard {
@@ -27,4 +44,10 @@ img {
 .movieTitle {
   font-size: 0.75rem;
   width: 165px;
+}
+
+@media (768px <= width) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
