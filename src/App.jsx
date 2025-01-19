@@ -7,9 +7,7 @@ function App() {
   const [genres, setGenres] = useState([]);
   const [page, setPage] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
-  const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchWord, setSearchWord] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
   const API_URL = import.meta.env.VITE_TMDB_API_URL;
   const IMG_PATH = import.meta.env.VITE_TMDB_IMG_PATH;
@@ -42,19 +40,12 @@ function App() {
     setSelectedYear(e.target.value);
     setPage(1);
     setMovies([]);
-    setFilteredMovies([]);
-    setIsSearching(false);
     setSearchWord('');
   };
 
   const searchHandler = (e) => {
     e.preventDefault();
-    setIsSearching(true);
-
-    const searchResults = movies.filter((movie) =>
-      movie.title.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setFilteredMovies(searchResults);
+    setSearchWord(e.target.value);
   };
 
   const getGenreNames = (genreIds) => {
@@ -64,7 +55,16 @@ function App() {
       .join(', ');
   };
 
-  const displayMovies = isSearching ? filteredMovies : movies;
+  const getDisplayMovies = () => {
+    if (!searchWord) {
+      return movies;
+    }
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(searchWord.toLowerCase())
+    );
+  };
+
+  const displayMovies = getDisplayMovies();
 
   return (
     <>
@@ -118,7 +118,7 @@ function App() {
             <p className="no-results">検索結果がありませんでした。</p>
           )}
         </div>
-        {!isSearching && displayMovies.length > 0 && (
+        {!searchWord && displayMovies.length > 0 && (
           <div className="load-more">
             <button onClick={loadMore}>さらに読み込む</button>
           </div>
