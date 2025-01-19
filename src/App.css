@@ -46,6 +46,14 @@ img {
   width: 165px;
 }
 
+.releaseDate {
+  font-size: 12px;
+}
+
+.genres {
+  font-size: 12px;
+}
+
 @media (768px <= width) {
   .container {
     grid-template-columns: repeat(3, 1fr);

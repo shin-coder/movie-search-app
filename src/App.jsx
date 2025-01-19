@@ -4,6 +4,7 @@ import './App.css';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [page, setPage] = useState(1);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [filteredMovies, setFilteredMovies] = useState([]);
@@ -15,13 +16,21 @@ function App() {
 
   useEffect(() => {
     fetch(
-      `${API_URL}?api_key=${API_KEY}&include_adult=false&include_video=false&language=ja&primary_release_year=${selectedYear}&sort_by=primary_release_date.desc&page=${page}`
+      `${API_URL}?api_key=${API_KEY}&include_adult=false&include_video=false&language=ja&primary_release_year=${selectedYear}&sort_by=primary_release_date.desc&page=${page}&total_results=20`
     )
       .then((response) => response.json())
       .then((data) => {
         setMovies((prev) =>
           page === 1 ? data.results : [...prev, ...data.results]
         );
+      });
+
+    fetch(
+      `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=ja`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setGenres(data.genres);
       });
   }, [API_KEY, API_URL, page, selectedYear]);
 
@@ -46,6 +55,13 @@ function App() {
       movie.title.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredMovies(searchResults);
+  };
+
+  const getGenreNames = (genreIds) => {
+    return genreIds
+      .map((id) => genres.find((genre) => genre.id === id)?.name)
+      .filter((name) => name)
+      .join(', ');
   };
 
   const displayMovies = isSearching ? filteredMovies : movies;
@@ -91,6 +107,8 @@ function App() {
                   alt={movie.title}
                 />
                 <h2 className="movieTitle">{movie.title}</h2>
+                <p className="releaseDate">{movie.release_date}</p>
+                <p className="genres">{getGenreNames(movie.genre_ids)}</p>
               </div>
             ))
           ) : (
