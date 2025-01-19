@@ -70,29 +70,32 @@ function App() {
     <>
       <div className="contentWrap">
         <h1>Movie Search</h1>
-        <form onSubmit={searchHandler}>
-          <input
-            type="text"
-            value={searchWord}
-            onChange={(e) => setSearchWord(e.target.value)}
-            placeholder="映画を検索..."
-          />
-          <button type="submit">検索</button>
-        </form>
-        <div className="selectWrap">
-          <select
-            value={selectedYear || ''}
-            onChange={changeYear}
-            name="selectYear"
-          >
-            <option value="">選択してください</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-          </select>
-        </div>
+
+        <din className="searchWrap">
+          <form onSubmit={searchHandler}>
+            <input
+              type="text"
+              value={searchWord}
+              onChange={(e) => setSearchWord(e.target.value)}
+              placeholder="映画を検索..."
+            />
+            <button type="submit">検索</button>
+          </form>
+          <div className="selectWrap">
+            <select
+              value={selectedYear || ''}
+              onChange={changeYear}
+              name="selectYear"
+            >
+              <option value="">選択してください</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+            </select>
+          </div>
+        </din>
 
         <div className="container">
           {displayMovies.length > 0 ? (

@@ -22,9 +22,12 @@ img {
   padding-inline: 3%;
 }
 
-.selectWrap {
+.searchWrap {
+  display: flex;
+  justify-content: flex-end;
   padding-inline: 3%;
-  margin-bottom: 2rem;
+  gap: 2rem;
+  margin-block: 1rem;
 }
 
 .container {
@@ -52,6 +55,22 @@ img {
 
 .genres {
   font-size: 12px;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin-block: 3rem;
+}
+
+.load-more button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 @media (768px <= width) {
